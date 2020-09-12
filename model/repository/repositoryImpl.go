@@ -11,12 +11,12 @@ type DbImpl struct {
 }
 
 func NewRepositoryImpl(db *gorm.DB) Repository {
-	repo := &DbImpl{db:db}
+	repo := &DbImpl{db: db}
 	return repo
 }
 
 func (r *DbImpl) CheckUserNickName(nickName string) int {
-	if r.db == nil{
+	if r.db == nil {
 		log.Println("ss")
 	}
 	var count int
@@ -33,4 +33,12 @@ func (r *DbImpl) CheckUserUserName(userName string) int {
 
 func (r *DbImpl) CreateUser(user *model.User) error {
 	return r.db.Create(&user).Error
+}
+
+func (r *DbImpl) UserLogin(username string) (*model.User, error) {
+	var user model.User
+	if err := r.db.Where("user_name = ?", username).First(&user).Error; err != nil {
+		return &user, err
+	}
+	return &user, nil
 }

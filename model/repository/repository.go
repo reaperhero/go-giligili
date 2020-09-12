@@ -6,4 +6,5 @@ type Repository interface {
 	CheckUserNickName(nickName string) int
 	CheckUserUserName(userName string) int
 	CreateUser(user *model.User) error
+	UserLogin(username string) (*model.User, error)
 }

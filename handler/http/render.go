@@ -41,3 +41,15 @@ func (h *httpHandler) UserRegister(c *gin.Context) {
 	}
 	c.JSON(200, res)
 }
+
+func (h *httpHandler) UserLogin(c *gin.Context) {
+	var requestJson = struct {
+		UserName string `form:"user_name" json:"user_name" binding:"required,min=5,max=30"`
+		Password string `form:"password" json:"password" binding:"required,min=8,max=40"`
+	}{}
+	if err := c.ShouldBind(&requestJson); err != nil {
+		c.JSON(200, model.ErrorResponse(err))
+	}
+	response := h.usecase.UserLogin(requestJson.UserName, requestJson.Password)
+	c.JSON(200, response)
+}

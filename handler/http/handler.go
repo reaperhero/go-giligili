@@ -17,9 +17,10 @@ func SetRouterApi(r *gin.Engine, u usecase.VidoeUsecase) {
 		v1.GET("ping", func(context *gin.Context) {
 			context.JSON(200, model.Response{
 				Status: 0,
-				Msg: "Pong",
+				Msg:    "Pong",
 			})
 		})
 		v1.POST("user/register", api.UserRegister)
+		v1.POST("user/login", api.UserLogin)
 	}
 }
