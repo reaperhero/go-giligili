@@ -52,22 +52,22 @@ func (u *VideoUsecaseImpl) UserRegister(userRegister model.UserRegister) (model.
 	return user, nil
 }
 
-func (u *VideoUsecaseImpl) UserLogin(username string, password string) *model.Response {
+func (u *VideoUsecaseImpl) UserLogin(username string, password string) (model.User, *model.Response) {
 	user, err := u.db.UserLogin(username)
 	if err != nil {
-		return &model.Response{
+		return *user, &model.Response{
 			Status: 40005,
 			Msg:    "用户不存在",
 			Data:   err,
 		}
 	}
 	if user != nil && !user.CheckPassword(password) {
-		return &model.Response{
+		return *user, &model.Response{
 			Status: 40006,
 			Msg:    "密码错误",
 		}
 	}
-	return &model.Response{
+	return *user, &model.Response{
 		Status: 1000,
 		Data:   user,
 		Msg:    "登陆成功",
